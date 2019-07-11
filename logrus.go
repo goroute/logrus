@@ -20,8 +20,10 @@ type Options struct {
 	Fields func(c route.Context, startTime, endTime time.Time) logrus.Fields
 }
 
+// Option defines option func.
 type Option func(*Options)
 
+// GetDefaultOptions returns default options.
 func GetDefaultOptions() Options {
 	return Options{
 		Skipper: route.DefaultSkipper,
@@ -29,18 +31,21 @@ func GetDefaultOptions() Options {
 	}
 }
 
+// Skipper sets skipper option.
 func Skipper(skipper route.Skipper) Option {
 	return func(o *Options) {
 		o.Skipper = skipper
 	}
 }
 
+// Entry sets logrus entry option.
 func Entry(entry *logrus.Entry) Option {
 	return func(o *Options) {
 		o.Entry = entry
 	}
 }
 
+// Fields sets logrus log fields option.
 func Fields(fields func(c route.Context, startTime, endTime time.Time) logrus.Fields) Option {
 	return func(o *Options) {
 		o.Fields = fields
