@@ -8,7 +8,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-
 // Options defines the options for logrus middleware.
 type Options struct {
 	// Skipper defines a function to skip middleware.
@@ -26,7 +25,7 @@ type Option func(*Options)
 func GetDefaultOptions() Options {
 	return Options{
 		Skipper: route.DefaultSkipper,
-		Entry: logrus.NewEntry(logrus.StandardLogger()),
+		Entry:   logrus.NewEntry(logrus.StandardLogger()),
 	}
 }
 
