@@ -22,12 +22,13 @@ func TestInfo(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	c := mux.NewContext(req, rec)
-	h := New(Entry(entry))(func(c route.Context) error {
+	h := func(c route.Context) error {
 		return c.String(http.StatusOK, "test")
-	})
+	}
+	mw := New(Entry(entry))
 
 	// Status 2xx
-	h(c)
+	mw(c, h)
 
 	str := buf.String()
 	assert.Contains(t, str, "bytes_out=4")
@@ -47,12 +48,13 @@ func TestError(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	c := mux.NewContext(req, rec)
-	h := New(Entry(entry))(func(c route.Context) error {
+	h := func(c route.Context) error {
 		return errors.New("ups")
-	})
+	}
+	mw := New(Entry(entry))
 
 	// Status 5xx
-	h(c)
+	mw(c, h)
 
 	str := buf.String()
 	assert.Contains(t, str, "msg=ups")
